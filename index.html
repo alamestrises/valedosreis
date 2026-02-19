@@ -1,0 +1,799 @@
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vale dos Reis Boutique | Plano de Investimento</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom Font Setup */
+        body { font-family: 'Lato', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+
+        /* Chart Container Styling - MANDATORY */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%; /* Parent controls width */
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px; 
+            max-height: 400px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f5f5f4; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d6d3d1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a29e; 
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Classes */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .nav-active {
+            color: #d97706; /* amber-600 */
+            border-bottom: 2px solid #d97706;
+        }
+    </style>
+
+    <!-- 
+    Chosen Palette: Warm Neutrals & Professional Blue
+    - Background: Stone-50 (#fafaf9)
+    - Primary Text: Slate-800 (#1e293b)
+    - Headlines: Slate-900 (#0f172a)
+    - Accent: Amber-600 (#d97706) for ROI/Callouts
+    - Secondary: Stone-500 (#78716c)
+    -->
+
+    <!-- 
+    Application Structure Plan:
+    1. Hero Section: Immediate value proposition (Location + Concept) and Navigation.
+    2. Executive Dashboard: High-level numbers (TIR, Payback, CAPEX) to grab investor attention immediately.
+    3. Market Context: Interactive charts showing why Penedo/STR is the right market now.
+    4. Strategy Engine (Interactive): User toggles between Scenarios A, B, and C. This proves the logic behind choosing "Hybrid".
+    5. Financial Lab (Interactive): User toggles "Conservative/Moderate/Aggressive" to see Cash Flow projections update in real-time.
+    6. Roadmap & Risk: Static but visually structured implementation plan.
+    7. CTA: Contact for the full Data Room.
+    -->
+
+    <!-- 
+    Visualization & Content Choices:
+    1. Dashboard: Big Number Cards (HTML) -> Inform -> Immediate Impact.
+    2. Market Demographics: Doughnut Chart (Chart.js) -> Inform -> Show guest profile mix.
+    3. Strategy Comparison: Radar Chart (Chart.js) -> Compare -> Visualizing trade-offs (Risk vs Yield) of scenarios.
+    4. Financial Projections: Combo Bar/Line Chart (Chart.js) -> Change -> Showing Cash Flow over time.
+    5. Financial Toggles: Interactive HTML Buttons -> Interaction -> Updates Chart.js data.
+    -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+</head>
+<body class="bg-stone-50 text-slate-800 antialiased selection:bg-amber-100 selection:text-amber-800">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-stone-200 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-bold text-slate-900 tracking-tight">Vale dos Reis <span class="text-amber-600">Boutique</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <button onclick="scrollToSection('dashboard')" class="text-sm font-medium text-slate-600 hover:text-amber-600 transition-colors">Resumo</button>
+                    <button onclick="scrollToSection('market')" class="text-sm font-medium text-slate-600 hover:text-amber-600 transition-colors">Mercado</button>
+                    <button onclick="scrollToSection('strategy')" class="text-sm font-medium text-slate-600 hover:text-amber-600 transition-colors">Estratégia</button>
+                    <button onclick="scrollToSection('financials')" class="text-sm font-medium text-slate-600 hover:text-amber-600 transition-colors">Financeiro</button>
+                    <button onclick="scrollToSection('risks')" class="text-sm font-medium text-slate-600 hover:text-amber-600 transition-colors">Riscos</button>
+                </div>
+                <button class="bg-slate-900 text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-slate-800 transition-transform transform hover:scale-105 shadow-lg">
+                    Investir Agora
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-amber-100 text-amber-800 text-xs font-bold tracking-wider uppercase mb-6 border border-amber-200">
+                Oportunidade Private Equity • Penedo/RJ
+            </span>
+            <h1 class="text-5xl md:text-7xl font-bold text-slate-900 mb-6 leading-tight">
+                Hotelaria Boutique <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-amber-500">Alta Rentabilidade</span>
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-600 leading-relaxed">
+                Um complexo de chalés de design no coração do Vale dos Reis. 
+                Estruturado para maximizar o ROI através de locação de temporada profissionalizada.
+            </p>
+            <div class="mt-10 flex justify-center gap-4">
+                <button onclick="scrollToSection('financials')" class="px-8 py-3 rounded-lg bg-amber-600 text-white font-bold hover:bg-amber-700 transition shadow-lg hover:shadow-xl hover:-translate-y-1">
+                    Ver Números (TIR 22%)
+                </button>
+                <button onclick="scrollToSection('strategy')" class="px-8 py-3 rounded-lg bg-white text-slate-700 border border-slate-300 font-bold hover:bg-slate-50 transition shadow-sm hover:shadow-md">
+                    Conhecer o Produto
+                </button>
+            </div>
+        </div>
+        <!-- Decorative Background Element -->
+        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-full h-full z-0 opacity-30 pointer-events-none">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-amber-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+            <div class="absolute top-20 right-10 w-72 h-72 bg-slate-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+        </div>
+    </header>
+
+    <!-- Section 1: Executive Dashboard -->
+    <section id="dashboard" class="py-16 bg-white border-y border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-10 text-center md:text-left">
+                <h2 class="text-3xl font-bold text-slate-900">Sumário Executivo</h2>
+                <p class="mt-2 text-slate-600 max-w-3xl">
+                    O projeto combina a segurança patrimonial de um ativo imobiliário (terreno próprio + construção) com a rentabilidade explosiva do mercado de <em>Short-Term Rental</em> em destinos consolidados.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- KPI Card 1 -->
+                <div class="p-6 bg-stone-50 rounded-xl border border-stone-200 hover:border-amber-400 transition-colors group">
+                    <p class="text-sm font-bold text-slate-500 uppercase tracking-wide">Rentabilidade (TIR)</p>
+                    <div class="flex items-baseline mt-2">
+                        <span class="text-4xl font-bold text-slate-900 group-hover:text-amber-600 transition-colors">22%</span>
+                        <span class="ml-1 text-sm text-slate-500">a.a.</span>
+                    </div>
+                    <div class="mt-4 text-xs text-green-600 font-bold flex items-center">
+                        ▲ 250% vs CDI
+                    </div>
+                </div>
+                
+                <!-- KPI Card 2 -->
+                <div class="p-6 bg-stone-50 rounded-xl border border-stone-200 hover:border-amber-400 transition-colors group">
+                    <p class="text-sm font-bold text-slate-500 uppercase tracking-wide">Payback Estimado</p>
+                    <div class="flex items-baseline mt-2">
+                        <span class="text-4xl font-bold text-slate-900 group-hover:text-amber-600 transition-colors">38</span>
+                        <span class="ml-1 text-sm text-slate-500">Meses</span>
+                    </div>
+                    <div class="mt-4 text-xs text-slate-500">
+                        Acelerado via gestão dinâmica
+                    </div>
+                </div>
+
+                <!-- KPI Card 3 -->
+                <div class="p-6 bg-stone-50 rounded-xl border border-stone-200 hover:border-amber-400 transition-colors group">
+                    <p class="text-sm font-bold text-slate-500 uppercase tracking-wide">CAPEX Total</p>
+                    <div class="flex items-baseline mt-2">
+                        <span class="text-2xl font-bold text-slate-900">R$ 1.25</span>
+                        <span class="ml-1 text-lg text-slate-900">MM</span>
+                    </div>
+                    <div class="mt-4 text-xs text-slate-500">
+                        R$ 115k por unidade (média)
+                    </div>
+                </div>
+
+                <!-- KPI Card 4 -->
+                <div class="p-6 bg-stone-50 rounded-xl border border-stone-200 hover:border-amber-400 transition-colors group">
+                    <p class="text-sm font-bold text-slate-500 uppercase tracking-wide">Ticket Médio (ADR)</p>
+                    <div class="flex items-baseline mt-2">
+                        <span class="text-4xl font-bold text-slate-900 group-hover:text-amber-600 transition-colors">R$ 520</span>
+                    </div>
+                    <div class="mt-4 text-xs text-slate-500">
+                        Cenário Híbrido (Base)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Market Intelligence -->
+    <section id="market" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                
+                <!-- Text Content -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div>
+                        <h2 class="text-3xl font-bold text-slate-900 mb-4">O "Efeito Penedo"</h2>
+                        <div class="w-20 h-1 bg-amber-500 mb-6"></div>
+                        <p class="text-slate-600 leading-relaxed mb-4">
+                            Penedo não é apenas um destino de inverno. Com o turismo de proximidade consolidado pós-pandemia, a região opera com alta demanda o ano todo ("Natal o Ano Todo").
+                        </p>
+                        <p class="text-slate-600 leading-relaxed mb-4">
+                            <strong>O Gap de Mercado:</strong> A oferta atual é polarizada. De um lado, pousadas antigas e caras. Do outro, chalés amadores sem serviço.
+                        </p>
+                        <ul class="space-y-3 mt-6">
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 h-6 w-6 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-xs mt-0.5">✓</span>
+                                <span class="ml-3 text-slate-700 text-sm">Turismo Drive-to (2h30 do RJ, 3h30 de SP)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 h-6 w-6 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-xs mt-0.5">✓</span>
+                                <span class="ml-3 text-slate-700 text-sm">Demanda de "Remote Work" nos dias úteis</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 h-6 w-6 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-xs mt-0.5">✓</span>
+                                <span class="ml-3 text-slate-700 text-sm">Alta liquidez em plataformas (Airbnb, Booking)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Visualizations -->
+                <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Guest Profile Chart -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
+                        <h3 class="text-sm font-bold text-slate-500 uppercase mb-4">Perfil do Hóspede</h3>
+                        <div class="chart-container h-64">
+                            <canvas id="guestChart"></canvas>
+                        </div>
+                        <p class="text-xs text-center text-slate-400 mt-2">Foco estratégico em casais (Ticket Alto)</p>
+                    </div>
+
+                    <!-- Market Trend Chart -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
+                        <h3 class="text-sm font-bold text-slate-500 uppercase mb-4">Tendência de Diária (Sazonal)</h3>
+                        <div class="chart-container h-64">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                        <p class="text-xs text-center text-slate-400 mt-2">Volatilidade controlada via Revenue Management</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Product Strategy Engine -->
+    <section id="strategy" class="py-20 bg-slate-900 text-white overflow-hidden relative">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#d97706 1px, transparent 1px); background-size: 32px 32px;"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Estratégia de Implantação</h2>
+                <p class="mt-4 text-slate-400 max-w-2xl mx-auto">
+                    Analisamos 3 cenários para o terreno de 698 m². Use os botões abaixo para entender a lógica por trás da escolha do <strong>Cenário C (Híbrido)</strong>.
+                </p>
+            </div>
+
+            <!-- Interactive Toggle -->
+            <div class="flex justify-center mb-10">
+                <div class="bg-slate-800 p-1 rounded-lg inline-flex shadow-xl border border-slate-700">
+                    <button onclick="updateStrategy('A')" id="btn-A" class="px-6 py-2 rounded-md text-sm font-medium transition-all text-slate-400 hover:text-white">Cenário A: Microchalés</button>
+                    <button onclick="updateStrategy('B')" id="btn-B" class="px-6 py-2 rounded-md text-sm font-medium transition-all text-slate-400 hover:text-white">Cenário B: Loft Duplex</button>
+                    <button onclick="updateStrategy('C')" id="btn-C" class="bg-amber-600 text-white shadow-lg px-6 py-2 rounded-md text-sm font-medium transition-all">Cenário C: Híbrido (Recomendado)</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Dynamic Content Card -->
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-8 shadow-2xl transition-all duration-300" id="strategy-card">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-amber-500" id="strat-title">Cenário C: Mix Estratégico</h3>
+                            <p class="text-slate-400 text-sm mt-1" id="strat-subtitle">Equilíbrio perfeito entre volume e exclusividade.</p>
+                        </div>
+                        <div class="bg-slate-700 px-3 py-1 rounded text-xs font-mono text-white" id="strat-units">9 Unidades</div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-slate-900/50 p-4 rounded-lg">
+                                <p class="text-xs text-slate-500 uppercase">CAPEX Estimado</p>
+                                <p class="text-xl font-bold text-white" id="strat-capex">R$ 1.25 MM</p>
+                            </div>
+                            <div class="bg-slate-900/50 p-4 rounded-lg">
+                                <p class="text-xs text-slate-500 uppercase">Ticket Médio</p>
+                                <p class="text-xl font-bold text-white" id="strat-ticket">R$ 520</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="text-sm font-bold text-white mb-2">Análise Tática:</p>
+                            <p class="text-slate-400 text-sm leading-relaxed" id="strat-desc">
+                                Combina 4 Lofts (Ticket Alto) com 5 Microchalés (Giro Rápido). Permite capturar tanto o casal em lua de mel quanto o turista de fim de semana, mitigando o risco de vacância durante a semana.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Radar Chart Comparison -->
+                <div class="relative">
+                    <h4 class="text-center text-slate-400 text-sm uppercase tracking-widest mb-4">Matriz de Decisão</h4>
+                    <div class="chart-container bg-slate-800/50 rounded-2xl p-4 border border-slate-700">
+                        <canvas id="strategyRadar"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Financial Lab -->
+    <section id="financials" class="py-20 bg-stone-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-10">
+                <h2 class="text-3xl font-bold text-slate-900">Simulação Financeira</h2>
+                <div class="w-20 h-1 bg-amber-500 my-4"></div>
+                <p class="text-slate-600 max-w-3xl">
+                    Transparência total. Teste a resiliência do modelo de negócio alterando as premissas de mercado abaixo. O gráfico de fluxo de caixa se ajusta instantaneamente.
+                </p>
+            </div>
+
+            <!-- Control Panel -->
+            <div class="bg-white rounded-xl shadow-lg border border-stone-200 p-6 mb-8">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                    <span class="text-slate-700 font-bold text-lg">Cenário de Mercado:</span>
+                    <div class="flex bg-stone-100 p-1 rounded-lg">
+                        <button onclick="updateFinancials('conservative')" id="fin-btn-cons" class="px-6 py-2 rounded-md text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors">Conservador</button>
+                        <button onclick="updateFinancials('moderate')" id="fin-btn-mod" class="bg-white text-amber-600 shadow-sm border border-stone-200 px-6 py-2 rounded-md text-sm font-bold transition-colors">Moderado (Base)</button>
+                        <button onclick="updateFinancials('aggressive')" id="fin-btn-aggr" class="px-6 py-2 rounded-md text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors">Otimista</button>
+                    </div>
+                    
+                    <div class="flex gap-8 text-sm">
+                        <div class="text-center">
+                            <span class="block text-slate-400 text-xs uppercase">Ocupação</span>
+                            <span class="font-bold text-slate-900 text-lg" id="display-occupancy">58%</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-slate-400 text-xs uppercase">Diária Média</span>
+                            <span class="font-bold text-slate-900 text-lg" id="display-adr">R$ 520</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-slate-400 text-xs uppercase">Payback</span>
+                            <span class="font-bold text-amber-600 text-lg" id="display-payback">38 Meses</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Chart -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                <h3 class="text-lg font-bold text-slate-800 mb-6">Projeção de Fluxo de Caixa Acumulado (5 Anos)</h3>
+                <div class="chart-container w-full h-96">
+                    <canvas id="financialChart"></canvas>
+                </div>
+                <p class="mt-4 text-xs text-slate-400 text-center">
+                    *Valores líquidos de taxas de plataforma, impostos e custos operacionais diretos.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Roadmap & Risks -->
+    <section id="risks" class="py-20 bg-white border-t border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                
+                <!-- Roadmap -->
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-8 flex items-center">
+                        <span class="w-8 h-8 rounded bg-slate-900 text-white flex items-center justify-center text-sm mr-3">1</span>
+                        Cronograma de Execução
+                    </h3>
+                    <div class="relative border-l-2 border-slate-200 ml-4 space-y-10">
+                        <!-- Item 1 -->
+                        <div class="relative pl-8">
+                            <span class="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-4 border-white"></span>
+                            <h4 class="text-lg font-bold text-slate-800">Meses 1-2: Legalização</h4>
+                            <p class="text-slate-600 text-sm mt-1">Aprovação de projeto na Prefeitura de Itatiaia e Licenciamento Ambiental.</p>
+                        </div>
+                        <!-- Item 2 -->
+                        <div class="relative pl-8">
+                            <span class="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-amber-500 border-4 border-white"></span>
+                            <h4 class="text-lg font-bold text-slate-800">Meses 3-8: Obra Civil</h4>
+                            <p class="text-slate-600 text-sm mt-1">Infraestrutura, fundações e montagem modular das unidades (redução de desperdício).</p>
+                        </div>
+                        <!-- Item 3 -->
+                        <div class="relative pl-8">
+                            <span class="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-400 border-4 border-white"></span>
+                            <h4 class="text-lg font-bold text-slate-800">Mês 9: Setup & Decor</h4>
+                            <p class="text-slate-600 text-sm mt-1">Marcenaria, enxoval hoteleiro e automação (fechaduras smart).</p>
+                        </div>
+                        <!-- Item 4 -->
+                        <div class="relative pl-8">
+                            <span class="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-green-500 border-4 border-white"></span>
+                            <h4 class="text-lg font-bold text-slate-800">Mês 10: Go Live</h4>
+                            <p class="text-slate-600 text-sm mt-1">Soft opening e início das vendas nas OTAs.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Risk Matrix -->
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-8 flex items-center">
+                        <span class="w-8 h-8 rounded bg-amber-600 text-white flex items-center justify-center text-sm mr-3">2</span>
+                        Mitigação de Riscos
+                    </h3>
+                    <div class="grid gap-4">
+                        <div class="p-4 bg-stone-50 rounded-lg border-l-4 border-amber-500">
+                            <h5 class="font-bold text-slate-800 text-sm">Risco Regulatório</h5>
+                            <p class="text-slate-600 text-xs mt-1">Estruturação como "Meio de Hospedagem" (CNAE hoteleiro) ao invés de locação simples, blindando contra restrições de condomínio.</p>
+                        </div>
+                        <div class="p-4 bg-stone-50 rounded-lg border-l-4 border-slate-500">
+                            <h5 class="font-bold text-slate-800 text-sm">Risco de Vacância</h5>
+                            <p class="text-slate-600 text-xs mt-1">Mix de produtos: Microchalés garantem giro rápido com preço acessível, enquanto Lofts garantem margem.</p>
+                        </div>
+                        <div class="p-4 bg-stone-50 rounded-lg border-l-4 border-green-500">
+                            <h5 class="font-bold text-slate-800 text-sm">Risco de Obra (INCC)</h5>
+                            <p class="text-slate-600 text-xs mt-1">Construção modular reduz tempo de exposição à inflação de materiais e imprevistos de canteiro.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / CTA -->
+    <footer class="bg-slate-900 text-white py-16">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-6 font-serif">Invista no Vale dos Reis</h2>
+            <p class="text-slate-400 mb-10 text-lg">
+                Um ativo real, blindado contra a inflação e com gestão profissionalizada.
+                <br>O timing perfeito para entrar no mercado de Penedo.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <button class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-4 px-10 rounded-full transition-all shadow-lg hover:shadow-amber-900/50">
+                    Solicitar Pitch Deck Completo
+                </button>
+                <button class="bg-transparent border border-slate-600 hover:bg-slate-800 text-white font-bold py-4 px-10 rounded-full transition-all">
+                    Falar com Sócios
+                </button>
+            </div>
+            <p class="mt-12 text-xs text-slate-600">
+                © 2024 Vale dos Reis Holding. Todos os direitos reservados. 
+                <br>Este documento é confidencial e contém projeções que podem variar.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. SETUP & DATA ---
+        
+        // Colors
+        const colors = {
+            primary: '#0f172a', // slate-900
+            secondary: '#d97706', // amber-600
+            light: '#f5f5f4', // stone-100
+            text: '#334155', // slate-700
+            accentBlue: '#3b82f6'
+        };
+
+        // Chart Defaults
+        Chart.defaults.font.family = "'Lato', sans-serif";
+        Chart.defaults.color = colors.text;
+
+        // Label Wrapping Helper
+        function wrapLabel(str, maxChars = 15) {
+            if (str.length <= maxChars) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + 1 + words[i].length <= maxChars) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // --- 2. INITIALIZATION OF CHARTS ---
+
+        // A. Guest Profile (Doughnut)
+        const ctxGuest = document.getElementById('guestChart').getContext('2d');
+        new Chart(ctxGuest, {
+            type: 'doughnut',
+            data: {
+                labels: ['Casais (Romance)', 'Famílias Pequenas', 'Remote Workers', 'Outros'],
+                datasets: [{
+                    data: [55, 25, 15, 5],
+                    backgroundColor: [colors.primary, colors.secondary, '#94a3b8', '#e2e8f0'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right', labels: { boxWidth: 12, font: {size: 11} } },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.raw + '%';
+                            }
+                        }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+
+        // B. Market Trend (Line)
+        const ctxTrend = document.getElementById('trendChart').getContext('2d');
+        new Chart(ctxTrend, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                datasets: [{
+                    label: 'Diária Média (R$)',
+                    data: [480, 450, 380, 400, 380, 650, 700, 500, 420, 450, 500, 680],
+                    borderColor: colors.secondary,
+                    backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 3,
+                    pointBackgroundColor: colors.primary
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { mode: 'index', intersect: false }
+                },
+                scales: {
+                    y: { beginAtZero: false, min: 300, grid: { borderDash: [5, 5] } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // C. Strategy Radar Chart (Interactive)
+        let strategyRadarChart;
+        const ctxRadar = document.getElementById('strategyRadar').getContext('2d');
+        
+        const strategyData = {
+            A: { data: [9, 5, 8, 4, 7], label: 'Cenário A' }, // Volume, Ticket, Occupancy, Cost(inv), Margin
+            B: { data: [4, 9, 6, 9, 8], label: 'Cenário B' },
+            C: { data: [7, 8, 8, 6, 9], label: 'Cenário C' }
+        };
+
+        function initRadar() {
+            strategyRadarChart = new Chart(ctxRadar, {
+                type: 'radar',
+                data: {
+                    labels: ['Volume Ocupação', 'Ticket Médio', 'Estabilidade', 'Baixo CAPEX', 'ROI Total'],
+                    datasets: [{
+                        label: strategyData.C.label,
+                        data: strategyData.C.data,
+                        fill: true,
+                        backgroundColor: 'rgba(217, 119, 6, 0.2)',
+                        borderColor: colors.secondary,
+                        pointBackgroundColor: colors.secondary,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: colors.secondary
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            pointLabels: { color: '#94a3b8', font: { size: 12 } },
+                            ticks: { display: false, backdropColor: 'transparent' },
+                            suggestedMin: 0,
+                            suggestedMax: 10
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+        initRadar();
+
+        // --- 3. INTERACTIVITY LOGIC ---
+
+        // Strategy Toggle Logic
+        const stratContent = {
+            A: {
+                title: 'Cenário A: Microchalés',
+                subtitle: 'Foco em Volume e Giro Rápido',
+                units: '12 Unidades',
+                capex: 'R$ 950k',
+                ticket: 'R$ 350',
+                desc: 'Maximiza o uso do terreno com unidades compactas (20m²). Excelente ocupação nos finais de semana, mas sofre com diária baixa e alta concorrência de preço, reduzindo a margem operacional.',
+                btnId: 'btn-A'
+            },
+            B: {
+                title: 'Cenário B: Lofts Duplex',
+                subtitle: 'Foco em Exclusividade e Design',
+                units: '6 Unidades',
+                capex: 'R$ 1.45 MM',
+                ticket: 'R$ 750',
+                desc: 'Produto premium (45m²) com hidro e pé-direito duplo. Diária alta, mas risco elevado de vacância durante a semana e maior custo de construção (CAPEX) por unidade.',
+                btnId: 'btn-B'
+            },
+            C: {
+                title: 'Cenário C: Híbrido',
+                subtitle: 'Otimização de Portfólio (Recomendado)',
+                units: '9 Unidades (4 Lofts + 5 Micro)',
+                capex: 'R$ 1.25 MM',
+                ticket: 'R$ 520',
+                desc: 'Combina 4 Lofts (Ticket Alto) com 5 Microchalés (Giro Rápido). Permite capturar tanto o casal em lua de mel quanto o turista de fim de semana, mitigando o risco de vacância durante a semana.',
+                btnId: 'btn-C'
+            }
+        };
+
+        function updateStrategy(scenario) {
+            // Update Text
+            const data = stratContent[scenario];
+            document.getElementById('strat-title').innerText = data.title;
+            document.getElementById('strat-subtitle').innerText = data.subtitle;
+            document.getElementById('strat-units').innerText = data.units;
+            document.getElementById('strat-capex').innerText = data.capex;
+            document.getElementById('strat-ticket').innerText = data.ticket;
+            document.getElementById('strat-desc').innerText = data.desc;
+
+            // Update Buttons
+            ['A', 'B', 'C'].forEach(s => {
+                const btn = document.getElementById(`btn-${s}`);
+                if (s === scenario) {
+                    btn.className = "bg-amber-600 text-white shadow-lg px-6 py-2 rounded-md text-sm font-medium transition-all transform scale-105";
+                } else {
+                    btn.className = "px-6 py-2 rounded-md text-sm font-medium transition-all text-slate-400 hover:text-white";
+                }
+            });
+
+            // Update Chart
+            strategyRadarChart.data.datasets[0].data = strategyData[scenario].data;
+            strategyRadarChart.data.datasets[0].label = strategyData[scenario].label;
+            strategyRadarChart.update();
+        }
+
+        // Financial Simulation Logic
+        let financialChart;
+        const ctxFin = document.getElementById('financialChart').getContext('2d');
+
+        const finData = {
+            conservative: {
+                occupancy: '45%',
+                adr: 'R$ 420',
+                payback: '52 Meses',
+                cashflow: [-1250000, -1000000, -750000, -400000, 0, 500000] // Illustrative cumulative
+            },
+            moderate: {
+                occupancy: '58%',
+                adr: 'R$ 520',
+                payback: '38 Meses',
+                cashflow: [-1250000, -850000, -350000, 250000, 950000, 1750000]
+            },
+            aggressive: {
+                occupancy: '70%',
+                adr: 'R$ 650',
+                payback: '28 Meses',
+                cashflow: [-1250000, -600000, 200000, 1100000, 2100000, 3200000]
+            }
+        };
+
+        function initFinancialChart() {
+            financialChart = new Chart(ctxFin, {
+                type: 'bar',
+                data: {
+                    labels: ['Investimento', 'Ano 1', 'Ano 2', 'Ano 3', 'Ano 4', 'Ano 5'],
+                    datasets: [{
+                        type: 'line',
+                        label: 'Fluxo Caixa Acumulado',
+                        data: finData.moderate.cashflow,
+                        borderColor: colors.secondary,
+                        borderWidth: 3,
+                        tension: 0.3,
+                        pointBackgroundColor: colors.primary,
+                        pointRadius: 4,
+                        yAxisID: 'y'
+                    }, {
+                        type: 'bar',
+                        label: 'Receita Anual Líquida (Base)',
+                        data: [0, 400000, 500000, 600000, 700000, 800000], // Illustrative
+                        backgroundColor: '#e2e8f0',
+                        borderRadius: 4,
+                        yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            position: 'right',
+                            grid: { drawOnChartArea: false },
+                            title: { display: true, text: 'Acumulado (R$)' }
+                        },
+                        y1: {
+                            position: 'left',
+                            display: false // Hide annual bars axis for cleanliness
+                        }
+                    }
+                }
+            });
+        }
+        initFinancialChart();
+
+        function updateFinancials(scenario) {
+            const data = finData[scenario];
+            
+            // Update Display Numbers
+            document.getElementById('display-occupancy').innerText = data.occupancy;
+            document.getElementById('display-adr').innerText = data.adr;
+            document.getElementById('display-payback').innerText = data.payback;
+
+            // Update Buttons Style
+            ['cons', 'mod', 'aggr'].forEach(k => {
+                const btn = document.getElementById(`fin-btn-${k}`);
+                // reset
+                btn.className = "px-6 py-2 rounded-md text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors";
+            });
+            
+            // Set Active Button
+            let activeKey = 'mod';
+            if (scenario === 'conservative') activeKey = 'cons';
+            if (scenario === 'aggressive') activeKey = 'aggr';
+            
+            const activeBtn = document.getElementById(`fin-btn-${activeKey}`);
+            activeBtn.className = "bg-white text-amber-600 shadow-sm border border-stone-200 px-6 py-2 rounded-md text-sm font-bold transition-colors transform scale-105";
+
+            // Update Chart Data
+            financialChart.data.datasets[0].data = data.cashflow;
+            financialChart.update();
+        }
+
+        // --- 4. NAVIGATION UTILS ---
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            const navHeight = document.getElementById('navbar').offsetHeight;
+            const y = el.getBoundingClientRect().top + window.pageYOffset - navHeight;
+            window.scrollTo({top: y, behavior: 'smooth'});
+        }
+
+    </script>
+</body>
+</html>
